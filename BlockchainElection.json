@@ -1,0 +1,236 @@
+{
+  "ApplicationName": "BlockchainElection",
+  "DisplayName": "Blockchain Election",
+  "Description": "A regenerative Voting System using Blockchain",
+  "ApplicationRoles": [
+    {
+      "Name": "ElectionHead",
+      "Description": "Who manages all the zones and candidates of the election"
+    },
+    {
+      "Name": "Voter",
+      "Description": "One who votes for the candidate"
+    },
+    {
+      "Name": "ZoneRepresentative",
+      "Description": "One who takes care of the voting in the particular zones"
+    }
+  ],
+  "Workflows": [
+    {
+      "Name": "BlockchainElection",
+      "DisplayName": "Blockchain Election",
+      "Description": "Voting Process",
+      "Initiators": [
+        "ElectionHead"
+      ],
+      "StartState": "SignUpState",
+      "Properties": [
+        {
+          "Name": "Title",
+          "DisplayName": "Enter the Zone",
+          "Description": "Enter the Zone",
+          "Type": {
+            "Name": "string"
+          }
+        },
+        {
+          "Name": "State",
+          "DisplayName": "State",
+          "Description": "Holds the state of the contract",
+          "Type": {
+            "Name": "state"
+          }
+        },
+        {
+          "Name": "ElectionHead",
+          "DisplayName": "Election Commission",
+          "Description": "Organizer of the election",
+          "Type": {
+            "Name": "ElectionHead"
+          }
+        },
+        {
+          "Name": "ZoneRepresentative",
+          "DisplayName": "Representative of the Zone",
+          "Description": "Representative of the election",
+          "Type": {
+            "Name": "ZoneRepresentative"
+          }
+        },
+        {
+          "Name": "Voter",
+          "DisplayName": "Voter",
+          "Description": "Voter",
+          "Type": {
+            "Name": "Voter"
+          }
+        },
+        {
+          "Name": "CandidatesCount",
+          "DisplayName": "Candidates Count",
+          "Type": {
+            "Name": "int"
+          }
+        },
+        {
+          "Name": "CandidateName",
+          "DisplayName": "Candidate name",
+          "Type": {
+            "Name": "string"
+          }
+        },
+        {
+          "Name": "CandidateId",
+          "DisplayName": "Candidate ID",
+          "Type": {
+            "Name": "int"
+          }
+        },
+        {
+          "Name": "Winner",
+          "DisplayName": "Winner Of the Election",
+          "Type": {
+            "Name": "string"
+          }
+        }
+      ],
+      "Constructor": {
+        "Parameters": [
+          {
+            "Name": "TitleT",
+            "Description": "Enter the Zone",
+            "DisplayName": "Enter the Zone",
+            "Type": {
+              "Name": "string"
+            }
+          }
+        ]
+      },
+      "Functions": [
+        {
+          "Name": "AddCandidate",
+          "DisplayName": "Add a Candidate",
+          "Description": "Add a Candidate contesting for the Election",
+          "Parameters": [
+            {
+              "Name": "CandidateName",
+              "Description": "Name of the Candidate",
+              "DisplayName": "Name",
+              "Type": {
+                "Name": "string"
+              }
+            }
+          ]
+        },
+        {
+          "Name": "Vote",
+          "DisplayName": "Vote",
+          "Description": "Vote for a particular candidate",
+          "Parameters": [
+            {
+              "Name": "CandidateId",
+              "Description": "ID of the Candidate",
+              "DisplayName": "Candidate ID 1.BJP 2.Congress",
+              "Type": {
+                "Name": "int"
+              }
+            }
+          ]
+        },
+        {
+          "Name": "CalculateResult",
+          "DisplayName": "Calculate Results",
+          "Description": "Shows who won the election",
+          "Parameters": []
+        },
+        {
+          "Name": "AllowVoting",
+          "DisplayName": "Initiate Voting",
+          "Description": "Start the voting period and allow the voters to vote",
+          "Parameters": []
+        }
+      ],
+      "States": [
+        {
+          "Name": "SignUpState",
+          "DisplayName": "SignUpState",
+          "Description": "Initiating the candidates",
+          "PercentComplete": 25,
+          "Style": "Success",
+          "Transitions": [
+            {
+              "AllowedRoles": [
+                "ElectionHead"
+              ],
+              "AllowedInstanceRoles": [
+                "ElectionHead"
+              ],
+              "DisplayName": "Add Candidates",
+              "Function": "AddCandidate",
+              "NextStates": [
+                "SignUpState"
+              ]
+            },
+            {
+              "AllowedRoles": [
+                "ZoneRepresentative"
+              ],
+              "AllowedInstanceRoles": [
+                "ZoneRepresentative"
+              ],
+              "DisplayName": "Start Voting Period",
+              "Function": "AllowVoting",
+              "NextStates": [
+                "VotingState"
+              ]
+            }
+          ]
+        },
+        {
+          "Name": "VotingState",
+          "DisplayName": "Voting State",
+          "Description": "Vote for your Candidate",
+          "PercentComplete": 50,
+          "Style": "Success",
+          "Transitions": [
+            {
+              "AllowedRoles": [
+                "ElectionHead"
+              ],
+              "AllowedInstanceRoles": [
+                "ElectionHead"
+              ],
+              "DisplayName": "Results",
+              "Function": "CalculateResult",
+              "NextStates": [
+                "ResultState"
+              ]
+            },
+            {
+              "AllowedRoles": [
+                "Voter"
+              ],
+              "AllowedInstanceRoles": [
+                "Voter"
+              ],
+              "DisplayName": "Vote",
+              "Function": "Vote",
+              "NextStates": [
+                "VotingState"
+              ]
+            }
+          ]
+        },
+        {
+          "Name": "ResultState",
+          "DisplayName": "Results",
+          "Description": "See the Results",
+          "PercentComplete": 100,
+          "Style": "Success",
+          "Transitions": []
+        }
+      ]
+    }
+  ]
+}
